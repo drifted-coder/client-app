@@ -1,1 +1,16 @@
-<p>login works!</p>
+<div class="vh-100 d-flex justify-content-center align-items-center">
+
+    <div class="card p-4 shadow" style="width:350px">
+        <h4 class="text-center mb-3">Login</h4>
+        <form [formGroup]="loginForm" (ngSubmit)="submit()">
+            <input class="form-control mb-3" placeholder="Email" formControlName="email">
+
+            <input class="form-control mb-3" type="password" placeholder="Password" formControlName="password">
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+
+
+    </div>
+
+</div>

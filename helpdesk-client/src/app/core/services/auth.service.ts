@@ -21,8 +21,8 @@ export class AuthService {
     return this.http.post(`${this.api}/refresh`, {});
   }
 
-  logout = (): Observable<any> => {
-    return this.http.post(`${this.api}/logout`, {});
+  logout = (userId:string, refreshToken: string | null): Observable<any> => {
+    return this.http.post(`${this.api}/logout`, {userId, refreshToken});
   }
 
 }

@@ -26,11 +26,16 @@ export class LoginComponent implements OnInit {
 
   submit() {
 
-    this.auth.login(this.loginForm.value).subscribe((res: any) => {
-      localStorage.setItem('accessToken', res.accessToken);
-      localStorage.setItem('user', JSON.stringify(res.user));
-      this.router.navigate(['/dashboard']);
-    });
-
+    this.auth.login(this.loginForm.value).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    }
+    );
   }
 }
