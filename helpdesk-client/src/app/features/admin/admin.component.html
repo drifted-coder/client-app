@@ -1,1 +1,23 @@
-<p>admin works!</p>
+<div class="card p-3 shadow-sm">
+
+    <h4>Users</h4>
+
+    <table class="table mt-3">
+
+        <tr *ngFor="let u of users">
+
+            <td>{{u.name}}</td>
+
+            <td>
+                <select class="form-select">
+                    <option>User</option>
+                    <option>Agent</option>
+                    <option>Admin</option>
+                </select>
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>

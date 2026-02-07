@@ -1,7 +1,7 @@
 <div class="vh-100 d-flex justify-content-center align-items-center">
 
     <div class="card p-4 shadow" style="width:350px">
-        <h4 class="text-center mb-3">Login</h4>
+        <h4 class="text-center mb-3">Register</h4>
         <form [formGroup]="registerForm" (ngSubmit)="submit()">
             <input class="form-control mb-3" placeholder="Name" formControlName="name">
 
@@ -10,6 +10,7 @@
             <input class="form-control mb-3" type="password" placeholder="Password" formControlName="password">
 
             <select class="form-control mb-3" name="role" id="role" formControlName="role">
+                <option value="" [disabled]="true">--select role--</option>
                 <option value="user">User</option>
                 <option value="agent">Agent</option>
                 <option value="admin">Admin</option>

@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './ticket-detail.component.scss'
 })
 export class TicketDetailComponent {
-
+  ticket: any;
 }

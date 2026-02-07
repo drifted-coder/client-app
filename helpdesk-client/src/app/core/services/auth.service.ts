@@ -5,24 +5,24 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private api = 'http://localhost:8000/api/auth';
+  private apiUrl = 'http://localhost:8000/api/auth';
 
   constructor(private http: HttpClient) {}
 
   login = (data:any): Observable<any> => {
-    return this.http.post(`${this.api}/login`, data);
+    return this.http.post(`${this.apiUrl}/login`, data);
   }
 
   register = (data:any): Observable<any> => {
-    return this.http.post(`${this.api}/register`, data);
+    return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  refresh = (): Observable<any> => {
-    return this.http.post(`${this.api}/refresh`, {});
+  refresh = (refreshToken: string | null): Observable<any> => {
+    return this.http.post(`${this.apiUrl}/refresh`, {refreshToken});
   }
 
   logout = (userId:string, refreshToken: string | null): Observable<any> => {
-    return this.http.post(`${this.api}/logout`, {userId, refreshToken});
+    return this.http.post(`${this.apiUrl}/logout`, {userId, refreshToken});
   }
 
 }

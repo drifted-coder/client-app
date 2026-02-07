@@ -1,0 +1,33 @@
+.modern-card{
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 3px 12px rgba(0,0,0,0.08);
+}
+
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.toolbar input,
+.toolbar select{
+  width:220px;
+}
+
+.modern-table thead{
+  background:#f8f9fa;
+}
+
+.ticket-link{
+  text-decoration:none;
+  font-weight:500;
+}
+
+.pagination-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:14px;
+}

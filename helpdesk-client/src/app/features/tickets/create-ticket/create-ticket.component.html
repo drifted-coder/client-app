@@ -1,1 +1,34 @@
-<p>create-ticket works!</p>
+<div class="card p-4 shadow-sm">
+
+    <h4>Create Ticket</h4>
+
+    <form [formGroup]="ticketForm" (ngSubmit)="submit()">
+        <input class="form-control mb-3" placeholder="Title" formControlName="title">
+
+        <textarea class="form-control mb-3" placeholder="Description" formControlName="description"></textarea>
+
+        <select class="form-select mb-3" formControlName="category">
+            <option value="" [disabled]="true">--Select Category--</option>
+            <option value="Bug">Bug</option>
+            <option value="Billing">Billing</option>
+            <option value="Feature Request">Feature Request</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <select class="form-select mb-3" formControlName="priority">
+            <option value="" [disabled]="true">--Select Priority--</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Urgent">Urgent</option>
+        </select>
+
+        <button type="submit" class="btn btn-success">
+            Submit
+        </button>
+        <button type="reset" class="btn btn-danger mx-2" (click)="resetForm()">
+            Reset
+        </button>
+    </form>
+
+</div>

@@ -9,7 +9,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth:AuthService){}
 
   intercept(req:HttpRequest<any>, next:HttpHandler){
-
+debugger
     const token = localStorage.getItem('accessToken');
 
     if(token){
@@ -23,7 +23,8 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError(err=>{
         if(err.status===401){
-          return this.auth.refresh().pipe(
+          const refreshToken = localStorage.getItem('refreshToken')
+          return this.auth.refresh(refreshToken).pipe(
             switchMap((res:any)=>{
               localStorage.setItem('accessToken',res.accessToken);
               return next.handle(req);

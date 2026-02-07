@@ -1,1 +1,77 @@
-<p>ticket-list works!</p>
+<div class="card modern-card">
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <form [formGroup]="ticketSearchForm" class="d-flex gap-2 align-items-center flex-wrap">
+
+      <input type="text" class="form-control" placeholder="Search tickets..." style="max-width:200px" />
+
+      <select class="form-select" formControlName="status" style="max-width:160px">
+        <option value="">All Status</option>
+        <option *ngFor="let s of statusList">{{s}}</option>
+      </select>
+
+      <select class="form-select" formControlName="priority" style="max-width:160px">
+        <option value="">All Priority</option>
+        <option *ngFor="let p of priorityList">{{p}}</option>
+      </select>
+
+      <select class="form-select" formControlName="category" style="max-width:160px">
+        <option value="">All Category</option>
+        <option *ngFor="let c of categoryList">{{c}}</option>
+      </select>
+
+      <select class="form-select" (change)="applySort($event)" style="max-width:150px">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+      </select>
+
+      <button class="btn btn-success">Search</button>
+
+    </form>
+
+
+  </div>
+
+  <!-- Modern Table -->
+  <div class="table-responsive">
+    <table class="table modern-table">
+
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let t of ticketsData | paginate
+                            : {
+                                itemsPerPage: pageSize,
+                                currentPage: currentPage,
+                                id: 'tickets',
+                                totalItems: totalTicketsData,
+                              };">
+          <td>
+            <a [routerLink]="['/tickets',t._id]" class="ticket-link">
+              {{t.title}}
+            </a>
+          </td>
+          <td><span class="badge bg-info">{{t.status}}</span></td>
+          <td>{{t.priority}}</td>
+          <td>{{t.category}}</td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-bar">
+    <pagination-controls (pageChange)="loadTickets((currentPage = $event))" id="tickets">
+    </pagination-controls>
+  </div>
+
+</div>

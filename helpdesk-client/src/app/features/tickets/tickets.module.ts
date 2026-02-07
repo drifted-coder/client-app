@@ -6,6 +6,8 @@ import { TicketsComponent } from './tickets.component';
 import { TicketListComponent } from './ticket-list/ticket-list.component';
 import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+import { ɵInternalFormsSharedModule, ReactiveFormsModule } from "@angular/forms";
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -17,7 +19,10 @@ import { CreateTicketComponent } from './create-ticket/create-ticket.component';
   ],
   imports: [
     CommonModule,
-    TicketsRoutingModule
-  ]
+    TicketsRoutingModule,
+    ɵInternalFormsSharedModule,
+    ReactiveFormsModule,
+    NgxPaginationModule
+]
 })
 export class TicketsModule { }

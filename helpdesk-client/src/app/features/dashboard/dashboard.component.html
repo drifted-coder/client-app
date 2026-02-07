@@ -1,1 +1,22 @@
-<p>dashboard works!</p>
+<div class="row">
+    @if (stats.length > 0) {
+
+    <div class="col-md-3" *ngFor="let item of stats">
+        <div class="card p-3 shadow-sm">
+            <h6>{{ item.label }}</h6>
+            <h3>{{ item.count }}</h3>
+        </div>
+    </div>
+
+    } @else {
+
+    <div class="col-12 text-center">
+        <div class="alert alert-info">
+            No stats available
+        </div>
+    </div>
+
+    }
+
+
+</div>

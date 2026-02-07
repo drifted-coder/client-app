@@ -7,9 +7,11 @@ import { Observable } from 'rxjs';
 })
 export class DashboardService {
 
+  private apiUrl = 'http://localhost:8000/api';
+
   constructor(private http: HttpClient) { }
 
   getDashboardData = (): Observable<any> => {
-    return this.http.get<any>('/api/tickets/dashboard')
+    return this.http.get<any>(`${this.apiUrl}/dashboard/user`)
   }
 }
