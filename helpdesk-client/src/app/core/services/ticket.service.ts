@@ -5,24 +5,24 @@ import { Observable } from "rxjs";
 @Injectable({ providedIn: 'root' })
 export class TicketService {
 
-  api = 'http://localhost:8000/api/tickets';
+  apiUrl = 'http://localhost:8000/api/tickets';
 
   constructor(private http: HttpClient) { }
 
   getTickets = (params: any): Observable<any> => {
-    return this.http.get(this.api, { params });
+    return this.http.get(this.apiUrl, { params });
   }
 
   getTicketById = (id: string): Observable<any> => {
-    return this.http.get(`${this.api}/${id}`);
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
   create = (data: any): Observable<any> => {
-    return this.http.post(this.api, data);
+    return this.http.post(this.apiUrl, data);
   }
 
   update = (id: string, data: any): Observable<any> => {
-    return this.http.patch(`${this.api}/${id}`, data);
+    return this.http.patch(`${this.apiUrl}/${id}`, data);
   }
 
   addComment = (ticketId: string, message: string): Observable<any> => {
@@ -30,6 +30,13 @@ export class TicketService {
     return this.http.post(
       `/api/tickets/${ticketId}/comments`,
       { message }
+    );
+
+  }
+
+  getComments = (ticketId: string): Observable<any> => {
+    return this.http.get(
+      `${this.apiUrl}/${ticketId}/comments`,
     );
 
   }

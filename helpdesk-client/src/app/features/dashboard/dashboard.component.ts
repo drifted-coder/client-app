@@ -7,7 +7,8 @@ import { DashboardService } from '../../core/services/dashboard.service';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  stats: any[] = [];
+  recentTickets: any[] = [];
+  statCounts: any[] = [];
 
   constructor(private dashboardService: DashboardService){}
 
@@ -18,7 +19,8 @@ export class DashboardComponent implements OnInit {
   getDashboardData = () => {
     this.dashboardService.getDashboardData().subscribe({
       next:(res) => {
-        this.stats = res
+        this.recentTickets = res.recentTickets;
+        this.statCounts = res.statusCounts;
       },
       error: (err) => {
         console.log(err)

@@ -43,6 +43,7 @@
           <th>Status</th>
           <th>Priority</th>
           <th>Category</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -62,6 +63,18 @@
           <td><span class="badge bg-info">{{t.status}}</span></td>
           <td>{{t.priority}}</td>
           <td>{{t.category}}</td>
+          <td>
+            <div>
+              <button class="btn btn-sm btn-success me-3" (click)="editDetails(t)" data-bs-toggle="modal"
+                data-bs-target="#createTicketModal" [disabled]="!(t.status === 'Open' && t.assignedTo == null)">
+                Edit
+              </button>
+
+
+              <button class="btn btn-sm btn-success" (click)="viewDetails(t)" data-bs-toggle="modal"
+                data-bs-target="#ticketDetailModal">Details</button>
+            </div>
+          </td>
         </tr>
       </tbody>
 
@@ -74,4 +87,158 @@
     </pagination-controls>
   </div>
 
+</div>
+
+<!-- view modal  -->
+<div class="modal fade" id="ticketDetailModal" tabindex="-1">
+
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+
+      <!-- HEADER -->
+      <div class="modal-header bg-light">
+        <div>
+          <h5 class="modal-title mb-0">
+            {{selectedTicket?.title}}
+          </h5>
+
+          <small class="text-muted">
+            Ticket ID: {{selectedTicket?._id}}
+          </small>
+        </div>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <div class="row">
+
+          <!-- LEFT SIDE -->
+          <div class="col-md-6">
+
+            <h6 class="fw-semibold mb-2">Ticket Info</h6>
+
+            <p>
+              <span class="badge bg-info me-2">
+                {{selectedTicket?.status}}
+              </span>
+
+              <span class="badge bg-warning text-dark">
+                {{selectedTicket?.priority}}
+              </span>
+            </p>
+
+            <p><strong>Category:</strong> {{selectedTicket?.category}}</p>
+
+            <p>
+              <strong>Description:</strong><br>
+              {{selectedTicket?.description}}
+            </p>
+
+          </div>
+
+          <!-- RIGHT SIDE -->
+          <div class="col-md-6">
+
+            <h6 class="fw-semibold mb-2">Activity Timeline</h6>
+
+            <div *ngFor="let a of activityData" class="border-start ps-3 mb-2">
+
+              <div class="fw-semibold">
+                {{a.type}}
+              </div>
+
+              <small class="text-muted">
+                {{a.at | date:'short'}}
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- COMMENTS -->
+        <hr>
+
+        <h6 class="fw-semibold mb-3">Comments</h6>
+
+        <div *ngFor="let c of commentsData" class="border-bottom pb-2 mb-2">
+
+          <div class="fw-semibold">
+            {{c.user}}
+            <small class="text-muted ms-2">
+              {{c.createdAt | date:'short'}}
+            </small>
+          </div>
+
+          <div>{{c.message}}</div>
+
+        </div>
+        <span *ngIf="commentsData.length == 0">No Comments Yet</span>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit Ticket  -->
+<div class="modal fade" id="createTicketModal" tabindex="-1">
+
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0">
+
+      <!-- HEADER -->
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">Create Ticket</h5>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeModal></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <div class="card p-4 shadow-sm border-0">
+
+          <form [formGroup]="ticketForm" (ngSubmit)="submit()">
+
+            <input class="form-control mb-3" placeholder="Title" formControlName="title">
+
+            <textarea class="form-control mb-3" placeholder="Description" formControlName="description"></textarea>
+
+            <select class="form-select mb-3" formControlName="category" readonly>
+              <option value="" [disabled]="true">--Select Category--</option>
+              <option value="Bug">Bug</option>
+              <option value="Billing">Billing</option>
+              <option value="Feature Request">Feature Request</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <select class="form-select mb-3" formControlName="priority" readonly>
+              <option value="" [disabled]="true">--Select Priority--</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+
+            <button type="submit" class="btn btn-success">
+              Submit
+            </button>
+
+            <button type="reset" class="btn btn-danger mx-2" (click)="resetForm()">
+              Reset
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>
