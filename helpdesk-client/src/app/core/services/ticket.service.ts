@@ -28,7 +28,7 @@ export class TicketService {
   addComment = (ticketId: string, message: string): Observable<any> => {
 
     return this.http.post(
-      `/api/tickets/${ticketId}/comments`,
+      `${this.apiUrl}/${ticketId}/comments`,
       { message }
     );
 

@@ -2,7 +2,7 @@
 
   <!-- Toolbar -->
   <div class="toolbar">
-    <form [formGroup]="ticketSearchForm" class="d-flex gap-2 align-items-center flex-wrap">
+    <form [formGroup]="ticketSearchForm" (ngSubmit)="loadTickets()" class="d-flex gap-2 align-items-center flex-wrap">
 
       <input type="text" class="form-control" placeholder="Search tickets..." style="max-width:200px" />
 
@@ -21,12 +21,8 @@
         <option *ngFor="let c of categoryList">{{c}}</option>
       </select>
 
-      <select class="form-select" (change)="applySort($event)" style="max-width:150px">
-        <option value="newest">Newest</option>
-        <option value="oldest">Oldest</option>
-      </select>
-
-      <button class="btn btn-success">Search</button>
+      <button type="submit" class="btn btn-success">Search</button>
+      <button type="reset" class="btn btn-danger"(click)="resetSearchForm()">Reset</button>
 
     </form>
 
@@ -66,16 +62,26 @@
           <td>
             <div>
               <button class="btn btn-sm btn-success me-3" (click)="editDetails(t)" data-bs-toggle="modal"
-                data-bs-target="#createTicketModal" [disabled]="!(t.status === 'Open' && t.assignedTo == null)">
+                data-bs-target="#createTicketModal" [disabled]="
+    tokenData?.role === 'user' &&
+    !(t.status === 'Open' && t.assignedTo == null)
+  ">
                 Edit
               </button>
-
-
               <button class="btn btn-sm btn-success" (click)="viewDetails(t)" data-bs-toggle="modal"
                 data-bs-target="#ticketDetailModal">Details</button>
+
+              <button class="btn btn-sm btn-success ms-3" (click)="getCommentsList(t)" data-bs-toggle="modal"
+                data-bs-target="#commentModal">Add/View Comment</button>
             </div>
           </td>
         </tr>
+
+         <tr *ngIf="ticketsData.length===0">
+                <td colspan="5" class="text-center text-muted">
+                  No Data found
+                </td>
+              </tr>
       </tbody>
 
     </table>
@@ -193,7 +199,7 @@
 
       <!-- HEADER -->
       <div class="modal-header bg-light">
-        <h5 class="modal-title">Create Ticket</h5>
+        <h5 class="modal-title">Edit Ticket</h5>
 
         <button type="button" class="btn-close" data-bs-dismiss="modal" #closeModal></button>
       </div>
@@ -209,7 +215,7 @@
 
             <textarea class="form-control mb-3" placeholder="Description" formControlName="description"></textarea>
 
-            <select class="form-select mb-3" formControlName="category" readonly>
+            <select class="form-select mb-3" formControlName="category">
               <option value="" [disabled]="true">--Select Category--</option>
               <option value="Bug">Bug</option>
               <option value="Billing">Billing</option>
@@ -217,7 +223,7 @@
               <option value="Other">Other</option>
             </select>
 
-            <select class="form-select mb-3" formControlName="priority" readonly>
+            <select class="form-select mb-3" formControlName="priority">
               <option value="" [disabled]="true">--Select Priority--</option>
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
@@ -225,17 +231,103 @@
               <option value="Urgent">Urgent</option>
             </select>
 
+            <select class="form-select mb-3" formControlName="status"
+              *ngIf="(this.tokenData?.role=='admin' || this.tokenData?.role=='agent')">
+              <option value="" [disabled]="true">--Select Status--</option>
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Waiting for User">Waiting for User</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Closed">Closed</option>
+            </select>
+
+            <select class="form-select mb-3" formControlName="assign"
+              *ngIf="(this.tokenData?.role=='admin' || this.tokenData?.role=='agent')">
+              <option value="" [disabled]="true">--Assign--</option>
+              <option value="Self">Self</option>
+              <option *ngFor="let user of userList" [value]="user._id">{{user.email}}</option>
+            </select>
+
             <button type="submit" class="btn btn-success">
               Submit
             </button>
 
-            <button type="reset" class="btn btn-danger mx-2" (click)="resetForm()">
+            <!-- <button type="reset" class="btn btn-danger mx-2" (click)="resetForm()">
               Reset
-            </button>
+            </button> -->
 
           </form>
 
         </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- comment Add / view modal  -->
+<div class="modal fade" id="commentModal" tabindex="-1">
+
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content shadow-lg border-0">
+
+      <!-- HEADER -->
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">Comments</h5>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <!-- COMMENTS TABLE -->
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-light">
+              <tr>
+                <th>Date & Time</th>
+                <th>Comment</th>
+                <th>Author</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let item of commentsList">
+                <td>{{item.createdAt | date:'short'}}</td>
+                <td>{{item.message}}</td>
+                <td>{{item.author.email}}</td>
+              </tr>
+
+              <tr *ngIf="commentsList.length===0">
+                <td colspan="3" class="text-center text-muted">
+                  No comments found
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <!-- REACTIVE COMMENT FORM -->
+        <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+
+          <label class="form-label fw-semibold">
+            Add Comment
+          </label>
+
+          <textarea class="form-control mb-3" rows="4" placeholder="Write your comment..." formControlName="comment">
+          </textarea>
+
+          <button type="submit" class="btn btn-primary">
+            Submit Comment
+          </button>
+
+        </form>
 
       </div>
 

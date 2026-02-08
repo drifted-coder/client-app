@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../core/services/dashboard.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,15 +11,19 @@ export class DashboardComponent implements OnInit {
   recentTickets: any[] = [];
   statCounts: any[] = [];
 
-  constructor(private dashboardService: DashboardService){}
+  constructor(private dashboardService: DashboardService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.getDashboardData();
+    this.authService.token$.subscribe(token => {
+      if (token) {
+        this.getDashboardData();
+      }
+    });
   }
 
   getDashboardData = () => {
     this.dashboardService.getDashboardData().subscribe({
-      next:(res) => {
+      next: (res) => {
         this.recentTickets = res.recentTickets;
         this.statCounts = res.statusCounts;
       },

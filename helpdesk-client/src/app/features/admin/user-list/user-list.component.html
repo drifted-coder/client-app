@@ -1,1 +1,113 @@
-<p>user-list works!</p>
+<div class="card shadow-sm p-3">
+    <h5 class="mb-3">User Details</h5>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Active</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let user of userList">
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.active }}</td>
+                <td>{{ user.createdAt | date:'short' }}</td>
+                <td>{{ user.updatedAt | date:'short' }}</td>
+                <div>
+                    <button class="btn btn-sm btn-success me-3" [disabled]="!user.active" data-bs-toggle="modal"
+                data-bs-target="#roleModal" (click)="setSelectedUser(user)">
+                        change role
+                    </button>
+                    <button class="btn btn-sm btn-success me-3" data-bs-toggle="modal"
+                data-bs-target="#statusModal" (click)="setSelectedUser(user)" *ngIf="user.active==false">
+                        Active
+                    </button>
+                    <button class="btn btn-sm btn-success me-3" data-bs-toggle="modal"
+                data-bs-target="#statusModal" (click)="setSelectedUser(user)" *ngIf="user.active==true">
+                        Inactive
+                    </button>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="statusModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Change Status</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeModal></button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you want to change the status?
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button class="btn btn-primary"
+                (click)="confirmStatusChange(this.selectedUser)">
+          Confirm
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- change roles modal -->
+ <div class="modal fade" id="roleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Change User Role</h5>
+        <button type="button" class="btn-close"
+                data-bs-dismiss="modal" #closeModalRole></button>
+      </div>
+
+      <div class="modal-body">
+
+        <label class="form-label">Select Role</label>
+
+        <select class="form-select"
+                [(ngModel)]="selectedRole">
+
+          <option value="">Select Role</option>
+          <option *ngFor="let role of roles"
+                  [value]="role">
+            {{ role }}
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"
+                data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button class="btn btn-primary"
+                (click)="submitRoleChange()">
+          Submit
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
