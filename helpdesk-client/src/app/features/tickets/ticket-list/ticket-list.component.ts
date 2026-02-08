@@ -44,6 +44,7 @@ export class TicketListComponent implements OnInit {
   userDetails: any;
 
   @ViewChild('closeModal') closeModal!: ElementRef;
+  @ViewChild('closeModalForDelete') closeModalForDelete!: ElementRef;
 
   constructor(
     private ticketService: TicketService,
@@ -270,4 +271,26 @@ export class TicketListComponent implements OnInit {
       },
     });
   };
+
+  // set ticket data of one row
+  setTicket(data: any) {
+    this.userDetails = data
+  }
+
+  deleteTicket(data: any) {
+    debugger
+    this.ticketService.delete(data._id).subscribe({
+      next: (res) => {
+        if(res){
+          alert("Deleted Successfully");
+          this.loadTickets();
+          this.closeModalForDelete.nativeElement.click();
+        }
+      },
+      error: (error) => {
+        alert(error)
+      }
+    })
+  }
 }
+

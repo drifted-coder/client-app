@@ -130,6 +130,15 @@
                 Comments
               </button>
 
+              @if(tokenData?.role === 'admin'){
+                <button class="btn btn-sm btn-outline-secondary"
+                        (click)="setTicket(t)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteTicketModal">
+                  Delete
+                </button>
+              }
+
             </div>
 
           </td>
@@ -395,6 +404,35 @@
 
         </form>
 
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- delete modal  -->
+<div class="modal fade" id="deleteTicketModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeModalForDelete></button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you want to delete the ticket ?
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button class="btn btn-primary"
+                (click)="deleteTicket(this.userDetails)">
+          Confirm
+        </button>
       </div>
 
     </div>

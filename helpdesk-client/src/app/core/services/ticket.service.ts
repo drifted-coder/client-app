@@ -25,6 +25,10 @@ export class TicketService {
     return this.http.patch(`${this.apiUrl}/${id}`, data);
   }
 
+  delete = (id: string): Observable<any> => {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
   addComment = (ticketId: string, message: string): Observable<any> => {
 
     return this.http.post(
