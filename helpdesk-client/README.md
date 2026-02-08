@@ -5,6 +5,7 @@ authentication, RBAC, dashboards, and ticket workflow UI.
 
 ## Tech Stack
 
+-   Node V20.15.0
 -   Angular 17
 -   TypeScript
 -   Bootstrap 5
