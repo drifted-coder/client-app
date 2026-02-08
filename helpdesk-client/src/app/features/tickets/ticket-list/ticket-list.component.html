@@ -1,37 +1,63 @@
-<div class="card modern-card">
+<div class="card modern-card border-0 shadow-sm">
 
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <form [formGroup]="ticketSearchForm" (ngSubmit)="loadTickets()" class="d-flex gap-2 align-items-center flex-wrap">
+  <!-- ===== TOOLBAR ===== -->
+  <div class="card-header bg-white border-0 pb-0">
+    <form [formGroup]="ticketSearchForm"
+          (ngSubmit)="loadTickets()"
+          class="row g-2 align-items-center">
 
-      <input type="text" class="form-control" placeholder="Search tickets..." style="max-width:200px" />
+      <div class="col-md-auto">
+        <input type="text"
+               class="form-control modern-input"
+               placeholder="Search tickets...">
+      </div>
 
-      <select class="form-select" formControlName="status" style="max-width:160px">
-        <option value="">All Status</option>
-        <option *ngFor="let s of statusList">{{s}}</option>
-      </select>
+      <div class="col-md-auto">
+        <select class="form-select modern-input"
+                formControlName="status">
+          <option value="">All Status</option>
+          <option *ngFor="let s of statusList">{{s}}</option>
+        </select>
+      </div>
 
-      <select class="form-select" formControlName="priority" style="max-width:160px">
-        <option value="">All Priority</option>
-        <option *ngFor="let p of priorityList">{{p}}</option>
-      </select>
+      <div class="col-md-auto">
+        <select class="form-select modern-input"
+                formControlName="priority">
+          <option value="">All Priority</option>
+          <option *ngFor="let p of priorityList">{{p}}</option>
+        </select>
+      </div>
 
-      <select class="form-select" formControlName="category" style="max-width:160px">
-        <option value="">All Category</option>
-        <option *ngFor="let c of categoryList">{{c}}</option>
-      </select>
+      <div class="col-md-auto">
+        <select class="form-select modern-input"
+                formControlName="category">
+          <option value="">All Category</option>
+          <option *ngFor="let c of categoryList">{{c}}</option>
+        </select>
+      </div>
 
-      <button type="submit" class="btn btn-success">Search</button>
-      <button type="reset" class="btn btn-danger"(click)="resetSearchForm()">Reset</button>
+      <div class="col-md-auto">
+        <button type="submit"
+                class="btn btn-success modern-btn">
+          Search
+        </button>
+      </div>
+
+      <div class="col-md-auto">
+        <button type="reset"
+                class="btn btn-outline-danger modern-btn"
+                (click)="resetSearchForm()">
+          Reset
+        </button>
+      </div>
 
     </form>
-
-
   </div>
 
-  <!-- Modern Table -->
+
+  <!-- ===== TABLE ===== -->
   <div class="table-responsive">
-    <table class="table modern-table">
+    <table class="table modern-table align-middle mb-0">
 
       <thead>
         <tr>
@@ -39,61 +65,101 @@
           <th>Status</th>
           <th>Priority</th>
           <th>Category</th>
-          <th>Actions</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
 
       <tbody>
+
         <tr *ngFor="let t of ticketsData | paginate
-                            : {
-                                itemsPerPage: pageSize,
-                                currentPage: currentPage,
-                                id: 'tickets',
-                                totalItems: totalTicketsData,
-                              };">
+                    : {
+                        itemsPerPage: pageSize,
+                        currentPage: currentPage,
+                        id: 'tickets',
+                        totalItems: totalTicketsData
+                      };"
+            class="table-row-hover">
+
           <td>
-            <a [routerLink]="['/tickets',t._id]" class="ticket-link">
+            <a [routerLink]="['/tickets',t._id]"
+               class="ticket-link">
               {{t.title}}
             </a>
           </td>
-          <td><span class="badge bg-info">{{t.status}}</span></td>
-          <td>{{t.priority}}</td>
-          <td>{{t.category}}</td>
+
           <td>
-            <div>
-              <button class="btn btn-sm btn-success me-3" (click)="editDetails(t)" data-bs-toggle="modal"
-                data-bs-target="#createTicketModal" [disabled]="
-    tokenData?.role === 'user' &&
-    !(t.status === 'Open' && t.assignedTo == null)
-  ">
+            <span class="badge rounded-pill bg-info-subtle text-info">
+              {{t.status}}
+            </span>
+          </td>
+
+          <td>
+            <span class="badge bg-light text-dark border">
+              {{t.priority}}
+            </span>
+          </td>
+
+          <td>{{t.category}}</td>
+
+          <td class="text-center">
+
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+              <button class="btn btn-sm btn-outline-success"
+                      (click)="editDetails(t)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#createTicketModal"
+                      [disabled]="
+                        tokenData?.role === 'user' &&
+                        !(t.status === 'Open' && t.assignedTo == null)
+                      ">
                 Edit
               </button>
-              <button class="btn btn-sm btn-success" (click)="viewDetails(t)" data-bs-toggle="modal"
-                data-bs-target="#ticketDetailModal">Details</button>
 
-              <button class="btn btn-sm btn-success ms-3" (click)="getCommentsList(t)" data-bs-toggle="modal"
-                data-bs-target="#commentModal">Add/View Comment</button>
+              <button class="btn btn-sm btn-outline-primary"
+                      (click)="viewDetails(t)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#ticketDetailModal">
+                Details
+              </button>
+
+              <button class="btn btn-sm btn-outline-secondary"
+                      (click)="getCommentsList(t)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#commentModal">
+                Comments
+              </button>
+
             </div>
+
+          </td>
+
+        </tr>
+
+        <tr *ngIf="ticketsData.length===0">
+          <td colspan="5" class="text-center text-muted py-4">
+            No Data Found
           </td>
         </tr>
 
-         <tr *ngIf="ticketsData.length===0">
-                <td colspan="5" class="text-center text-muted">
-                  No Data found
-                </td>
-              </tr>
       </tbody>
 
     </table>
   </div>
 
-  <!-- Pagination -->
-  <div class="pagination-bar">
-    <pagination-controls (pageChange)="loadTickets((currentPage = $event))" id="tickets">
-    </pagination-controls>
+
+  <!-- ===== PAGINATION ===== -->
+  <div class="card-footer bg-white border-0">
+    <div class="d-flex justify-content-end">
+      <pagination-controls
+        (pageChange)="loadTickets((currentPage = $event))"
+        id="tickets">
+      </pagination-controls>
+    </div>
   </div>
 
 </div>
+
 
 <!-- view modal  -->
 <div class="modal fade" id="ticketDetailModal" tabindex="-1">

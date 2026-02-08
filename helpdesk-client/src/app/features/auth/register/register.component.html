@@ -1,25 +1,53 @@
-<div class="vh-100 d-flex justify-content-center align-items-center">
+<div class="login-wrapper vh-100 d-flex justify-content-center align-items-center">
 
-    <div class="card p-4 shadow" style="width:350px">
-        <h4 class="text-center mb-3">Register</h4>
-        <form [formGroup]="registerForm" (ngSubmit)="submit()">
-            <input class="form-control mb-3" placeholder="Name" formControlName="name">
+  <div class="card login-card p-4 shadow-lg border-0">
+    <h4 class="text-center mb-4 fw-bold">Create Account</h4>
 
-            <input class="form-control mb-3" placeholder="Email" formControlName="email">
+    <form [formGroup]="registerForm" (ngSubmit)="submit()">
 
-            <input class="form-control mb-3" type="password" placeholder="Password" formControlName="password">
+      <div class="mb-3">
+        <input class="form-control custom-input"
+          placeholder="Full Name"
+          formControlName="name">
+      </div>
 
-            <select class="form-control mb-3" name="role" id="role" formControlName="role">
-                <option value="" [disabled]="true">--select role--</option>
-                <option value="user">User</option>
-                <option value="agent">Agent</option>
-                <option value="admin">Admin</option>
-            </select>
+      <div class="mb-3">
+        <input class="form-control custom-input"
+          placeholder="Email address"
+          formControlName="email">
+      </div>
 
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
-        </form>
+      <div class="mb-3">
+        <input class="form-control custom-input"
+          type="password"
+          placeholder="Password"
+          formControlName="password">
+      </div>
 
+      <div class="mb-3">
+        <select class="form-control custom-input"
+          name="role"
+          id="role"
+          formControlName="role">
+          <option value="" [disabled]="true">--select role--</option>
+          <option value="user">User</option>
+          <option value="agent">Agent</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
 
-    </div>
+      <button type="submit" class="btn btn-primary w-100 custom-btn">
+        Register
+      </button>
+
+      <p class="mt-4 text-center small">
+        Already Registered ?
+        <a routerLink="/auth/login" class="fw-bold text-decoration-none">
+          Log In
+        </a>
+      </p>
+
+    </form>
+  </div>
 
 </div>

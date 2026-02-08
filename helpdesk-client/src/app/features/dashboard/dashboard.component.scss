@@ -1,0 +1,62 @@
+.dashboard-wrapper {
+  padding-top: 10px;
+}
+
+/* Section Titles */
+.section-title {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Status Cards */
+.status-card {
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+}
+
+.status-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+}
+
+/* Main Dashboard Cards */
+.dashboard-card {
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* Ticket Items */
+.ticket-item {
+  padding: 12px 6px;
+  border-bottom: 1px solid #f1f1f1;
+  transition: background 0.2s ease;
+}
+
+.ticket-item:hover {
+  background: #f9f9ff;
+}
+
+.ticket-item:last-child {
+  border-bottom: none;
+}
+
+.ticket-title {
+  font-size: 15px;
+}
+
+/* Empty State */
+.empty-box {
+  font-size: 22px;
+  font-weight: 600;
+  color: #777;
+}
+
+/* Last Count */
+.last-count {
+  font-size: 28px;
+  font-weight: 700;
+  color: #4a4a4a;
+}

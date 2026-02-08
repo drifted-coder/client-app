@@ -1,79 +1,99 @@
-<div class="container-fluid">
+<div class="container-fluid dashboard-wrapper">
 
   <!-- STATUS COUNTS -->
   <div class="mb-4">
-    <h5 class="mb-3 fw-semibold">Status Counts</h5>
+    <h5 class="mb-3 section-title">Status Counts</h5>
 
-    <div class="row">
+    <div class="row g-3">
       <div class="col-md-3" *ngFor="let item of statCounts">
-        <div class="card shadow-sm border-0 p-3">
-          <h6 class="text-muted">{{item.label}}</h6>
-          <h3 class="mb-0">{{item.count}}</h3>
+        <div class="card status-card border-0 p-3 h-100">
+          <h6 class="text-muted mb-1">{{item._id}}</h6>
+          <h2 class="mb-0 fw-bold">{{item.count}}</h2>
         </div>
+      </div>
+
+      <div *ngIf="statCounts.length == 0">
+        <div class="empty-box">0</div>
       </div>
     </div>
   </div>
 
-  <!-- MY ASSIGNED TICKETS -->
+  <!-- MY ASSIGNED / RECENT -->
   <div class="mb-4">
-    <h5 class="mb-3 fw-semibold">My Assigned Tickets</h5>
+    <h5 class="mb-3 section-title">My {{header}} Tickets</h5>
 
-    <div class="card shadow-sm border-0">
+    <div class="card dashboard-card border-0">
       <div class="card-body">
 
-        <div *ngIf="recentTickets.length > 0; else noAssigned">
+        <!-- agent / admin -->
+        <div *ngIf="(tokenData.role=='agent' || tokenData.role=='admin')">
+          <div *ngIf="assignedTickets.length > 0; else noAssigned">
 
-          <div class="border-bottom py-2"
-               *ngFor="let t of recentTickets">
+            <div class="ticket-item"
+                 *ngFor="let t of assignedTickets">
 
-            <div class="fw-semibold">
-              {{t.title}}
+              <div class="fw-semibold ticket-title">
+                {{t.title}}
+              </div>
+
+              <small class="text-muted">
+                {{t.status}} • {{t.priority}}
+              </small>
+
             </div>
 
-            <small class="text-muted">
-              {{t.status}} • {{t.priority}}
-            </small>
-
           </div>
 
+          <ng-template #noAssigned>
+            <div class="alert alert-light border mb-0">
+              No assigned tickets
+            </div>
+          </ng-template>
         </div>
 
-        <ng-template #noAssigned>
-          <div class="alert alert-info mb-0">
-            No assigned tickets
+        <!-- user -->
+        <div *ngIf="(tokenData.role=='user')">
+          <div *ngIf="recentTickets.length > 0; else noRecent">
+
+            <div class="ticket-item"
+                 *ngFor="let t of recentTickets">
+
+              <div class="fw-semibold ticket-title">
+                {{t.title}}
+              </div>
+
+              <small class="text-muted">
+                {{t.status}} • {{t.priority}}
+              </small>
+
+            </div>
+
           </div>
-        </ng-template>
+
+          <ng-template #noRecent>
+            <div class="alert alert-light border mb-0">
+              No assigned tickets
+            </div>
+          </ng-template>
+        </div>
 
       </div>
     </div>
   </div>
 
-  <!-- TICKETS LAST 7 DAYS -->
-  <div>
-    <h5 class="mb-3 fw-semibold">Tickets Last 7 Days</h5>
+  <!-- LAST 7 DAYS -->
+  <div *ngIf="(tokenData.role=='agent' || tokenData.role=='admin')">
+    <h5 class="mb-3 section-title">Tickets Last 7 Days</h5>
 
-    <div class="card shadow-sm border-0">
+    <div class="card dashboard-card border-0">
       <div class="card-body">
 
-        <div *ngIf="recentTickets.length > 0; else noRecent">
-
-          <div class="border-bottom py-2"
-               *ngFor="let t of recentTickets">
-
-            <div class="fw-semibold">
-              {{t.title}}
-            </div>
-
-            <small class="text-muted">
-              {{t.createdAt | date:'mediumDate'}}
-            </small>
-
-          </div>
-
+        <div class="last-count">
+          {{this.lastSevenDaysCount}}
         </div>
 
-        <ng-template #noRecent>
-          <div class="alert alert-info mb-0">
+        <ng-template *ngIf="this.lastSevenDaysCount==0">
+          <div class="alert alert-light border mb-0">
             No tickets in last 7 days
           </div>
         </ng-template>

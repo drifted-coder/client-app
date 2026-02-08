@@ -41,6 +41,7 @@ export class TicketListComponent implements OnInit {
   ticketId!: string;
   commentsList: any[] = [];
   userList: any = [];
+  userDetails: any;
 
   @ViewChild('closeModal') closeModal!: ElementRef;
 
@@ -111,6 +112,7 @@ export class TicketListComponent implements OnInit {
 
   editDetails = (data: any) => {
     debugger;
+    this.userDetails = data;
     this.setTicketDetails();
     this.ticketId = data._id;
     this.ticketForm.patchValue({
@@ -119,7 +121,6 @@ export class TicketListComponent implements OnInit {
       category: data.category,
       priority: data.priority,
       status: data.status,
-      assign: data.assignedTo,
     });
   };
 
@@ -176,13 +177,21 @@ export class TicketListComponent implements OnInit {
   };
 
   submit = () => {
+    debugger
+    var assign;
+    if(this.ticketForm.get('assign')?.value == 'Self'){
+      assign = this.tokenData.id
+    }
+    else{
+      assign = this.ticketForm.get('assign')?.value
+    }
     let payload = {
       title: this.ticketForm.get('title')?.value,
       description: this.ticketForm.get('description')?.value,
       category: this.ticketForm.get('category')?.value,
       priority: this.ticketForm.get('priority')?.value,
       status: this.ticketForm.get('status')?.value,
-      assignedTo: this.ticketForm.get('assign')?.value,
+      assignedTo: assign
     };
 
     this.ticketService.update(this.ticketId, payload).subscribe({
@@ -228,6 +237,7 @@ export class TicketListComponent implements OnInit {
       next: (res) => {
         if (res) alert('Comments added successfully');
         this.commentForm.reset();
+        this.getCommentsList(this.userDetails);
       },
       error: (error) => {
         alert('Failed to add comment');
@@ -237,6 +247,7 @@ export class TicketListComponent implements OnInit {
 
   // get comments list
   getCommentsList = (data: any) => {
+    this.userDetails = data;
     this.ticketId = data._id;
     this.ticketService.getComments(data._id).subscribe({
       next: (res) => {
@@ -249,9 +260,10 @@ export class TicketListComponent implements OnInit {
   };
 
   getUsersList = () => {
+    debugger
     this.userService.getUsers().subscribe({
-      next: (res) => {
-        this.userList = res;
+      next: (res: any) => {
+        this.userList = res.filter((data: any) => data.role == 'agent');
       },
       error: (error) => {
         console.log(error);

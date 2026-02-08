@@ -1,0 +1,42 @@
+/* Background Gradient */
+.login-wrapper {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* Card Styling */
+.login-card {
+  width: 360px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  transition: transform 0.3s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Input Fields */
+.custom-input {
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: all 0.2s ease;
+}
+
+.custom-input:focus {
+  box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.35);
+  border-color: #667eea;
+}
+
+/* Button */
+.custom-btn {
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.custom-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}

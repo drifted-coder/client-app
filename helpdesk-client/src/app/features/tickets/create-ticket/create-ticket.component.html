@@ -1,34 +1,76 @@
-<div class="card p-4 shadow-sm">
+<div class="container py-4">
+  <div class="card border-0 shadow-lg rounded-4">
 
-    <h4>Create Ticket</h4>
+    <div class="card-body p-4">
 
-    <form [formGroup]="ticketForm" (ngSubmit)="submit()">
-        <input class="form-control mb-3" placeholder="Title" formControlName="title">
+      <h4 class="fw-bold mb-4 text-primary">
+        <i class="fa-solid fa-ticket me-2"></i>
+        Create Ticket
+      </h4>
 
-        <textarea class="form-control mb-3" placeholder="Description" formControlName="description"></textarea>
+      <form [formGroup]="ticketForm" (ngSubmit)="submit()">
 
-        <select class="form-select mb-3" formControlName="category">
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Title</label>
+          <input class="form-control form-control-lg rounded-3 shadow-sm"
+                 placeholder="Enter ticket title"
+                 formControlName="title">
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Description</label>
+          <textarea class="form-control rounded-3 shadow-sm"
+                    rows="4"
+                    placeholder="Describe your issue"
+                    formControlName="description"></textarea>
+        </div>
+
+        <!-- Category -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Category</label>
+          <select class="form-select rounded-3 shadow-sm"
+                  formControlName="category">
             <option value="" [disabled]="true">--Select Category--</option>
             <option value="Bug">Bug</option>
             <option value="Billing">Billing</option>
             <option value="Feature Request">Feature Request</option>
             <option value="Other">Other</option>
-        </select>
+          </select>
+        </div>
 
-        <select class="form-select mb-3" formControlName="priority">
+        <!-- Priority -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Priority</label>
+          <select class="form-select rounded-3 shadow-sm"
+                  formControlName="priority">
             <option value="" [disabled]="true">--Select Priority--</option>
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
             <option value="Urgent">Urgent</option>
-        </select>
+          </select>
+        </div>
 
-        <button type="submit" class="btn btn-success">
+        <!-- Buttons -->
+        <div class="d-flex gap-3">
+          <button type="submit"
+                  class="btn btn-success px-4 py-2 rounded-3 shadow-sm">
+            <i class="fa-solid fa-paper-plane me-1"></i>
             Submit
-        </button>
-        <button type="reset" class="btn btn-danger mx-2" (click)="resetForm()">
-            Reset
-        </button>
-    </form>
+          </button>
 
+          <button type="reset"
+                  class="btn btn-outline-danger px-4 py-2 rounded-3 shadow-sm"
+                  (click)="resetForm()">
+            <i class="fa-solid fa-rotate-left me-1"></i>
+            Reset
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
 </div>

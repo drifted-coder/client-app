@@ -5,15 +5,74 @@ import { RoleGuard } from './core/guards/role.guard.ts.guard';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 
+// const routes: Routes = [
+
+//   // AUTH ROUTES (NO SIDEBAR)
+//   {
+//     path: '',
+//     component: AuthLayoutComponent,
+//     children: [
+//       {
+//         path: 'auth',
+//         loadChildren: () =>
+//           import('./features/auth/auth.module')
+//             .then(m => m.AuthModule)
+//       }
+//     ]
+//   },
+
+//   // PROTECTED ROUTES (WITH SIDEBAR)
+//   {
+//     path: '',
+//     component: MainLayoutComponent,
+//     canActivate: [AuthGuard],
+//     children: [
+//       {
+//         path: 'dashboard',
+//         loadChildren: () =>
+//           import('./features/dashboard/dashboard.module')
+//             .then(m => m.DashboardModule)
+//       },
+//       {
+//         path: 'tickets',
+//         loadChildren: () =>
+//           import('./features/tickets/tickets.module')
+//             .then(m => m.TicketsModule)
+//       },
+//       {
+//         path: 'admin',
+//         canActivate: [RoleGuard],
+//         data: { roles: ['admin'] },
+//         loadChildren: () =>
+//           import('./features/admin/admin.module')
+//             .then(m => m.AdminModule)
+//       }
+//     ]
+//   },
+
+//   // DEFAULT ROUTE
+//   {
+//     path: '',
+//     redirectTo: 'auth/login',
+//     pathMatch: 'full'
+//   },
+
+//   // INVALID ROUTE
+//   {
+//     path: '**',
+//     redirectTo: 'auth/login'
+//   }
+// ];
+
 const routes: Routes = [
 
-  // AUTH ROUTES (NO SIDEBAR)
+  // AUTH LAYOUT (NO SIDEBAR)
   {
-    path: '',
+    path: 'auth',
     component: AuthLayoutComponent,
     children: [
       {
-        path: 'auth',
+        path: '',
         loadChildren: () =>
           import('./features/auth/auth.module')
             .then(m => m.AuthModule)
@@ -21,49 +80,29 @@ const routes: Routes = [
     ]
   },
 
-  // PROTECTED ROUTES (WITH SIDEBAR)
+  // MAIN APP LAYOUT (WITH SIDEBAR)
   {
     path: '',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      {
-        path: 'dashboard',
-        loadChildren: () =>
-          import('./features/dashboard/dashboard.module')
-            .then(m => m.DashboardModule)
-      },
-      {
-        path: 'tickets',
-        loadChildren: () =>
-          import('./features/tickets/tickets.module')
-            .then(m => m.TicketsModule)
-      },
+      { path: 'dashboard', loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule) },
+      { path: 'tickets', loadChildren: () => import('./features/tickets/tickets.module').then(m => m.TicketsModule) },
       {
         path: 'admin',
         canActivate: [RoleGuard],
         data: { roles: ['admin'] },
-        loadChildren: () =>
-          import('./features/admin/admin.module')
-            .then(m => m.AdminModule)
+        loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule)
       }
     ]
   },
 
-  // DEFAULT ROUTE
-  {
-    path: '',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'
-  },
+  // DEFAULT
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
-  // INVALID ROUTE
-  {
-    path: '**',
-    redirectTo: 'auth/login'
-  }
+  // WILDCARD
+  { path: '**', redirectTo: 'auth/login' }
 ];
-
 
 
 @NgModule({
